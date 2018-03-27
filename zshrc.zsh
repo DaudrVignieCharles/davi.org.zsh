@@ -25,6 +25,7 @@
     export LOGIN_MSG=true
     export AUTO_UPDATE=false
     export UPDATE_AUTOSYNC=false
+    local LOGFILE="$HOME/.zsh.log"
     # END CONFIGURATION SECTION
 
     # BEGIN LOGIN MESSAGE SECTION
@@ -39,9 +40,14 @@
 
     # BEGIN SOURCE OF RC.D
     typeset file;
+    if [[ -f $LOGFILE ]] ; then
+        rm $LOGFILE
+    fi
     for file in $HOME/.zsh/zshrc.d/[0-9][0-9][0-9]_*.init.zsh ; do
-        source $file;
+        printf "source %s\n" "$file" >> $LOGFILE
+        source $file 2>>$LOGFILE ;
     done
     # END SOURCE OF RC.D
 }
 
+export ZDEV_PATH=/home/touck/sync.save/programation/projets/davi.org.zsh
