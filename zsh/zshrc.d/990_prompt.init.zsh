@@ -19,7 +19,7 @@
     # LINE 2 LEFT   : return of the last command, time of the last command
     # LINE 2 RIGHT  : if git repo : branch, status
 
-    is_git(){
+    __is_git(){
         if $(git rev-parse --is-inside-work-tree 2>/dev/null) ; then
             return 0
         else
@@ -27,7 +27,7 @@
         fi
     }
 
-    git_current_branch(){
+    __git_current_branch(){
         local line
         git branch | while read line ; do
             if [[ $line[1] == "*" ]] ; then
@@ -36,7 +36,7 @@
         done
     }
 
-    git_status(){
+    __git_status(){
         setopt shwordsplit
         local line
         typeset -i A=0 AM=0 AD=0 UN=0 M=0 D=0
@@ -122,8 +122,8 @@
 
         export PROMPT="$PROMPT_DAVI_LINE_1"$'\n'"$PROMPT_DAVI_LINE_2_L %b%f"
         export RPROMPT
-        if is_git ; then
-            RPROMPT="%B%F{black}(%F{yellow}$(git_current_branch)%B%F{black})%b%F{cyan}-$(git_status)"
+        if __is_git ; then
+            RPROMPT="%B%F{black}(%B%F{yellow}$(__git_current_branch)%B%F{black})%b%F{cyan}-$(__git_status)%b%F{cyan}"
         else
             RPROMPT=""
         fi
