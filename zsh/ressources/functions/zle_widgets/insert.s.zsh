@@ -5,7 +5,7 @@ __zz_zle_insert_printf () {
      __zz_zle_gen_insert +8 "printf \"\n\""
 }
 zle -N __zz_zle_insert_printf
-bindkey "^[!^[p" __zz_zle_insert_printf
+bindkey "^[!^[e" __zz_zle_insert_printf
 
 ### if
 __zz_zle_insert_if () {
