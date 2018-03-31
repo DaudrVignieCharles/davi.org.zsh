@@ -14,9 +14,65 @@
 
     # Nice prompt based on Adam2
     # It display :
-    # LINE 1 LEFT   : relative path
+    # LINE 1 LEFT   : job(s), relative path
     # LINE 1 RIGHT  : date, tty, shlvl, user@host
-    # LINE 2        : return of the last command, time of the last command
+    # LINE 2 LEFT   : return of the last command, time of the last command
+    # LINE 2 RIGHT  : if git repo : branch, status
+
+    is_git(){
+        if $(git rev-parse --is-inside-work-tree 2>/dev/null) ; then
+            return 0
+        else
+            return 1
+        fi
+    }
+
+    git_current_branch(){
+        local line
+        git branch | while read line ; do
+            if [[ $line[1] == "*" ]] ; then
+                echo $line[3,-1]
+            fi
+        done
+    }
+
+    git_status(){
+        setopt shwordsplit
+        local line
+        typeset -i A=0 AM=0 AD=0 UN=0 M=0 D=0
+        typeset -a splited
+        local P1="%%B%%F{black}("
+        local P2="%%B%%F{black})"
+        local S="%%b%%F{cyan}-"
+        local STR="${P1}%%B%%F{%s}%s%%B%%F{white}%d${P2}"
+        local STATUS
+        git status --porcelain | while read line ; do
+            splited=( $line )
+            case $splited[1] in
+                'A') ((A++))
+                ;;
+                'AM') ((AM++))
+                ;;
+                'AD') ((AD++))
+                ;;
+                '??') ((UN++)) #untracked
+                ;;
+                'M') ((M++)) #modified
+                ;;
+                'D') ((D++)) #delete
+                ;;
+            esac
+        done
+        STATUS+=$(printf "$STR$S" "green" "+" "$A")
+        STATUS+=$(printf "$STR$S" "green" "M" "$AM")
+        STATUS+=$(printf "$STR$S" "green" "D" "$AD")
+        STATUS+=$(printf "$STR$S" "red" "?" "$UN")
+        STATUS+=$(printf "$STR$S" "red" "M" "$M")
+        STATUS+=$(printf "$STR" "red" "D" "$D")
+        printf "%b" "$STATUS"
+        unsetopt shwordsplit
+    }
+
     prompt_davi_configure(){
         unsetopt histexpand
         autoload -U add-zsh-hook
@@ -32,13 +88,13 @@
 
         local PROMPT_JOB="$CHAR_LPAREN%B%F{cyan}%j$CHAR_RPAREN"
         local PROMPT_DIR="$CHAR_LPAREN%B%F{green}%~$CHAR_RPAREN"
+        local PROMPT_DATE="$CHAR_LPAREN%b%F{cyan}$(date +"%a %d %b")$CHAR_RPAREN"
+        local PROMPT_TTY="$CHAR_LPAREN%b%F{cyan}$TTY$CHAR_RPAREN"
+        local PROMPT_SHLVL="$CHAR_LPAREN%b%F{cyan}»$(( SHLVL - 1 ))«$CHAR_RPAREN"
         local PROMPT_USER="%b%F{cyan}%n"
         local PROMPT_AT="%B%F{cyan}@"
         local PROMPT_HOST="%b%F{cyan}%m"
         local PROMPT_ID="$CHAR_LPAREN$PROMPT_USER$PROMPT_AT$PROMPT_HOST$CHAR_RPAREN"
-        local PROMPT_DATE="$CHAR_LPAREN%b%F{cyan}$(date +"%a %d %b")$CHAR_RPAREN"
-        local PROMPT_TTY="$CHAR_LPAREN%b%F{cyan}$TTY$CHAR_RPAREN"
-        local PROMPT_SHLVL="$CHAR_LPAREN%b%F{cyan}»$(( SHLVL - 1 ))«$CHAR_RPAREN"
         local PROMPT_RET="$CHAR_LPAREN%B%F{red}%?$CHAR_RPAREN"
         local PROMPT_TIME="$CHAR_LPAREN%B%F{green}%*$CHAR_RPAREN"
         local PROMPT_CHAR="%(!.%B%F{red}#.%B%F{white}>)"
@@ -46,7 +102,7 @@
         export PROMPT_DAVI_LINE_1_L="%B%F{cyan}.-$PROMPT_JOB$CHAR_SEP$PROMPT_DIR"
         export PROMPT_DAVI_LINE_1_R="$PROMPT_DATE$CHAR_SEP$PROMPT_TTY$CHAR_SEP$PROMPT_SHLVL$CHAR_SEP$PROMPT_ID$CHAR_SEP"
 
-        export PROMPT_DAVI_LINE_2="%B%F{cyan}\`-$PROMPT_RET$CHAR_SEP$PROMPT_TIME$CHAR_SEP$PROMPT_CHAR"
+        export PROMPT_DAVI_LINE_2_L="%B%F{cyan}\`-$PROMPT_RET$CHAR_SEP$PROMPT_TIME$CHAR_SEP$PROMPT_CHAR"
 
         add-zsh-hook precmd prompt_davi_precmd
     }
@@ -64,7 +120,13 @@
         fi
         export PROMPT_DAVI_LINE_1="$PROMPT_DAVI_LINE_1_L%b%F{cyan}$PROMPT_SEP$PROMPT_DAVI_LINE_1_R"
 
-        export PROMPT="$PROMPT_DAVI_LINE_1"$'\n'"$PROMPT_DAVI_LINE_2 %b%f"
+        export PROMPT="$PROMPT_DAVI_LINE_1"$'\n'"$PROMPT_DAVI_LINE_2_L %b%f"
+        export RPROMPT
+        if is_git ; then
+            RPROMPT="%B%F{black}(%F{yellow}$(git_current_branch)%B%F{black})%b%F{cyan}-$(git_status)"
+        else
+            RPROMPT=""
+        fi
         export PS2="%b%F{white}[%B%F{blue}%_%b%F{white}]%b%F{cyan}-%B%F{white}> "
         export PS4="%B%F{red}+%b%F{white}[%B%F{blue}%N%b%F{white}]%B%F{cyan}-%b%F{white}[%B%F{blue}%i%b%F{white}]%B%F{cyan}-%B%F{white}> %b%f"
         export zle_highlight[(r)default:*]="default:fg=yellow,bold"
