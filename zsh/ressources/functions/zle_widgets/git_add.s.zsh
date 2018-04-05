@@ -92,6 +92,9 @@ __zz_zle_gen_git-tui_add(){
             'D')
                 FILES_STATUS[$i]="$FILE_STATUS[1]_$FILE_STATUS[2]"
             ;;
+            'M')
+                FILES_STATUS[$i]="$FILE_STATUS[1]_$FILE_STATUS[2]"
+            ;;
         esac
     done
 
@@ -180,7 +183,7 @@ __zz_zle_gen_git-tui_add(){
                     color_ok -u
                     color_cancel
                     BUTTON_STATE=cancel
-                elif [[ $BUTTON_STATE == ok ]] ; then
+                elif [[ $BUTTON_STATE == cancel ]] ; then
                     color_ok
                     color_cancel -u
                     BUTTON_STATE=ok
