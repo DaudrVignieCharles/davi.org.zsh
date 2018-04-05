@@ -23,7 +23,8 @@ bindkey "^[:^[:" __zz_zle_git_status
 
 __zz_zle_git_add () {
     if __is_git ; then
-        BUFFER="git add $BUFFER"
+        BUFFER="__zz_zle_gen_git-tui_add"
+        
     else
         export zle_highlight[(r)default:*]="default:fg=red,bold"
         POSTDISPLAY=$'\nNot a git directory.'
