@@ -27,14 +27,13 @@ __zz_zle_gen_git-tui_add(){
     }
     typeset -a GIT_ADD_LIST
     git_add(){
-        zcurses main refresh
         local TOP_LEVEL="$(git rev-parse --show-toplevel)/"
         local i
-        for (( i=0 ; i<=$Y_MAX ; i++)) ; do
+        for (( i=1 ; i<=$Y_MAX ; i++)) ; do
             zcurses move main $i 3
             zcurses querychar main CHAR_ATTR
             if [[ $CHAR_ATTR[1] == '*' ]] ; then
-                FILE=$FILES_STATUS[$((i-2))]
+                FILE=$FILES_STATUS[$((i))]
                 FILE=( ${FILE:s/_/ } )
                 GIT_ADD_LIST+=$TOP_LEVEL$FILE[2]
             fi
@@ -51,12 +50,12 @@ __zz_zle_gen_git-tui_add(){
     zcurses attr main black/cyan
     zcurses border main
     zcurses position main POS
-    Y=1
-    X=2
+    TITLE="┤ Cochez les fichiers à ajouter : ├"
+    Y=0 X=$((COLUMNS/2-$#TITLE/2))
     zcurses move main $Y $X
     zcurses attr main black/cyan
-    zcurses string main "Cochez les fichiers à ajouter :" && ((Y+=2))
-
+    zcurses string main "$TITLE"
+    Y=1 X=2
     #Button windows :
     zcurses addwin ok 3 4 $((LINES-4)) $((COLUMNS-16)) main
     zcurses border ok
@@ -104,6 +103,7 @@ __zz_zle_gen_git-tui_add(){
         return 0
     fi
 
+    local FILE_LENGHT
     for FILE_STATUS in $FILES_STATUS ; do
         zcurses move main $((Y++)) $X
         zcurses string main "[ ] ${FILE_STATUS:s/_/ }"
@@ -111,12 +111,12 @@ __zz_zle_gen_git-tui_add(){
     done
     #BEGIN FILES TREATMENT
 
-    Y_MIN=3
-    Y_MAX=$(( FILE_LENGHT + 2 ))
+    Y_MIN=1
+    Y_MAX=$(( FILE_LENGHT ))
 
-    zcurses move main 3 3
-    Y=3
-    X=2
+    zcurses move main 1 3
+    Y=1
+    X=3
     zcurses refresh main
     NOEXIT=true
     while $NOEXIT ; do
@@ -152,9 +152,9 @@ __zz_zle_gen_git-tui_add(){
                 color_cancel -u
                 BUTTON_STATE=none
                 if [[ $Y -eq $Y_MIN ]] ; then
-                    :
+                    zcurses move main $((Y=Y_MAX)) $X
                 else
-                    zcurses move main $((--Y)) $X 
+                    zcurses move main $((--Y)) $X
                 fi
             ;;
             'DOWN')
@@ -162,7 +162,7 @@ __zz_zle_gen_git-tui_add(){
                 color_cancel -u
                 BUTTON_STATE=none
                 if [[ $Y -eq $Y_MAX ]] ; then
-                    :
+                    zcurses move main $((Y=1)) $X
                 else
                     zcurses move main $((++Y)) $X
                 fi
