@@ -1,6 +1,8 @@
 #!/usr/bin/zsh
 
 __zz_zle_gen_git-tui_add(){
+    # color_ok, color_cancel, (un)highlight ok/cancel button,
+    # used when user focuses on one of them.
     color_ok(){
         local color
         [[ $1 == '-u' ]] && { color=black/cyan attr=-bold } || { color=yellow/blue attr=+bold }
@@ -25,6 +27,7 @@ __zz_zle_gen_git-tui_add(){
         #clear
         NOEXIT=false
     }
+    # builds the list of files to add with the files checked by the user
     typeset -a GIT_ADD_LIST
     git_add(){
         local TOP_LEVEL="$(git rev-parse --show-toplevel)/"
@@ -39,37 +42,14 @@ __zz_zle_gen_git-tui_add(){
             fi
         done
     }
-    #BEGIN INIT
+
+    # zcurses initialisation and options setting
     zmodload zsh/curses
     setopt shwordsplit
     setopt noksharrays
     zcurses init
-    zcurses addwin main $LINES $COLUMNS 0 0
-    zcurses scroll main on
-    zcurses bg main cyan/cyan
-    zcurses attr main black/cyan
-    zcurses border main
-    zcurses position main POS
-    TITLE="┤ Cochez les fichiers à ajouter : ├"
-    Y=0 X=$((COLUMNS/2-$#TITLE/2))
-    zcurses move main $Y $X
-    zcurses attr main black/cyan
-    zcurses string main "$TITLE"
-    Y=1 X=2
-    #Button windows :
-    zcurses addwin ok 3 4 $((LINES-4)) $((COLUMNS-16)) main
-    zcurses border ok
-    zcurses move ok 1 1
-    zcurses string ok "OK"
-    zcurses addwin cancel 3 8 $((LINES-4)) $((COLUMNS-10)) main
-    zcurses border cancel
-    zcurses move cancel 1 1
-    zcurses string cancel "Cancel"
-    BUTTON_STATE=none
-    #END
 
-
-    #BEGIN FILES TREATMENT
+    # Get git file status
     typeset -a FILES_STATUS
     local i=0
     git status --porcelain | while read FILE_STATUS ; do
@@ -96,31 +76,72 @@ __zz_zle_gen_git-tui_add(){
             ;;
         esac
     done
-
     if ! [[ -n $FILES_STATUS ]] ; then
         clean_and_exit
         printf "\x1b[1;31mNothing can be added, no changes was found.\x1b[0m\n"
         return 0
     fi
 
+    # Build main window
+    zcurses addwin main $LINES $COLUMNS 0 0
+    zcurses bg main cyan/cyan
+    zcurses attr main black/cyan
+    zcurses border main
+    zcurses position main POS
+    TITLE="┤ Cochez les fichiers à ajouter : ├"
+    Y=0 X=$((COLUMNS/2-$#TITLE/2))
+    zcurses move main $Y $X
+    zcurses attr main black/cyan
+    zcurses string main "$TITLE"
+    Y=1 X=2
+
+    # Build files window :
+    zcurses addwin files $#FILES_STATUS $((COLUMNS-2)) 1 1 main
+    zcurses attr files black/cyan
+    zcurses scroll files on
+    zcurses border files
+    zcurses refresh files
+
+    # Build button windows :
+    # Build ok window :
+    zcurses addwin ok 3 4 $((LINES-4)) $((COLUMNS-16)) main
+    zcurses border ok
+    zcurses move ok 1 1
+    zcurses string ok "OK"
+    # Build cancel window :
+    zcurses addwin cancel 3 8 $((LINES-4)) $((COLUMNS-10)) main
+    zcurses border cancel
+    zcurses move cancel 1 1
+    zcurses string cancel "Cancel"
+
+    # BUTTON_STATE can have three states: none, ok, cancel
+    # none: focused on no button
+    # ok: focused on the ok button
+    # cancel: focused on the cancel button
+    BUTTON_STATE=none
+
+    # Printf files status in main window
     local FILE_LENGHT
     for FILE_STATUS in $FILES_STATUS ; do
         zcurses move main $((Y++)) $X
         zcurses string main "[ ] ${FILE_STATUS:s/_/ }"
         ((FILE_LENGHT++))
     done
-    #BEGIN FILES TREATMENT
-
+    # Y_MIN, Y_MAX : used for cursor up/down
     Y_MIN=1
     Y_MAX=$(( FILE_LENGHT ))
-
-    zcurses move main 1 3
     Y=1
     X=3
+    zcurses move main $Y $X
     zcurses refresh main
+    # NOEXIT is set to true by clean_and_exit()
     NOEXIT=true
+    # Wait for user input
     while $NOEXIT ; do
         zcurses refresh main
+        # User can press two types of key :
+        # RAW (classic alpha-num-sym) and KEY (special key like the arrow keys)
+        # whatever the type of key, it will be placed in CHAR
         zcurses input main RAW KEY
         if [[ -n $RAW ]] ; then
             CHAR=$RAW
