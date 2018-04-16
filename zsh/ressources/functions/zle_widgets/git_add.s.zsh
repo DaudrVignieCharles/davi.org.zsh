@@ -88,25 +88,24 @@ __zz_zle_git-tui_add(){
             file_status=( $file_status )
             case "${file_status[0]}" in
                 'MM')
-                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}"
+                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}" && ((i++))
                 ;;
                 'AM')
-                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}"
+                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}" && ((i++))
                 ;;
                 'AD')
-                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}"
+                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}" && ((i++))
                 ;;
                 '??')
-                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}"
+                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}" && ((i++))
                 ;;
-                'D')
-                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}"
+                ' D')
+                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}" && ((i++))
                 ;;
-                'M')
-                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}"
+                ' M')
+                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}" && ((i++))
                 ;;
             esac
-            ((i++))
         done
         export FILES_ALL_LEN=${#FILES_ALL[@]}
         if ! [[ -n ${FILES_ALL[@]} ]] ; then
@@ -209,11 +208,18 @@ __zz_zle_git-tui_add(){
             'UP')
                 reset_buttons
                 if [[ $WINDOW_CURSOR -eq 0 ]] ; then
-                    if [[ $WINDOW_LEN -ge $FILES_ALL_LEN ]] ; then
+                    if [[ $WINDOW_LEN -ge $FILES_ALL_LEN ]] && [[ $FILES_CURSOR -eq 0 ]] ; then
                         zcurses move files $((WINDOW_LEN-1)) 1
                         FILES_CURSOR=$((FILES_ALL_LEN-1))
                         WINDOW_CURSOR=$((WINDOW_LEN-1))
-
+                    elif [[ $WINDOW_LEN -lt $FILES_ALL_LEN ]] && [[ $FILES_CURSOR -ne 0 ]] ; then
+                        zcurses scroll files -1
+                        zcurses refresh files
+                        string=${FILES_ALL[$((--FILES_CURSOR))]}
+                        zcurses move files 0 0
+                        print_line $string
+                        zcurses move files 0 1
+                        zcurses refresh files
                     else
                         zcurses move files 0 0
                         zcurses clear files
@@ -236,8 +242,6 @@ __zz_zle_git-tui_add(){
                         zcurses refresh files
                         string=${FILES_ALL[$((++FILES_CURSOR))]}
                         zcurses move files $((WINDOW_LEN-1)) 0
-                        zcurses position files testo
-                        echo ${testo[@]}>>debug2
                         print_line $string
                         zcurses move files $((WINDOW_LEN-1)) 1
                         zcurses refresh files
