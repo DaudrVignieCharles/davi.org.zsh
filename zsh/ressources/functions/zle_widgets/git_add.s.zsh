@@ -1,4 +1,5 @@
 __zz_zle_git-tui_add(){
+
     init(){
         zmodload zsh/curses
         setopt shwordsplit
@@ -81,32 +82,33 @@ __zz_zle_git-tui_add(){
     }
 
     get_git_files(){
-        file_status=()
+        local list file_status
         local i=0
-        local file_status
-        git status --porcelain | while read file_status ; do
-            file_status=( $file_status )
-            case "${file_status[0]}" in
+        list=$(git status --porcelain | tr '\n' '*')
+        IFS="*"
+        for file_status in $list ; do
+            case "${file_status[0]}${file_status[1]}" in
                 'MM')
-                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}" && ((i++))
+                    FILES_ALL[$i]="${file_status[0,1]}_${file_status[3,-1]}" && ((i++))
                 ;;
                 'AM')
-                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}" && ((i++))
+                    FILES_ALL[$i]="${file_status[0,1]}_${file_status[3,-1]}" && ((i++))
                 ;;
                 'AD')
-                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}" && ((i++))
+                    FILES_ALL[$i]="${file_status[0,1]}_${file_status[3,-1]}" && ((i++))
                 ;;
                 '??')
-                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}" && ((i++))
+                    FILES_ALL[$i]="${file_status[0,1]}_${file_status[3,-1]}" && ((i++))
                 ;;
                 ' D')
-                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}" && ((i++))
+                    FILES_ALL[$i]="${file_status[0,1]}_${file_status[3,-1]}" && ((i++))
                 ;;
                 ' M')
-                    FILES_ALL[$i]="${file_status[0]}_${file_status[1]}" && ((i++))
+                    FILES_ALL[$i]="${file_status[0,1]}_${file_status[3,-1]}" && ((i++))
                 ;;
             esac
         done
+        unset IFS
         export FILES_ALL_LEN=${#FILES_ALL[@]}
         if ! [[ -n ${FILES_ALL[@]} ]] ; then
             printf "\x1b[1;31mNothing can be added, no changes was found.\x1b[0m\n"
@@ -115,7 +117,7 @@ __zz_zle_git-tui_add(){
     }
 
     print_line(){
-        local line=$1
+        local line="$1"
         if [[ -n ${FILES_ADD[(r)$line]} ]] ; then
             zcurses string files "[*] ${line:s/_/ }"
         else
@@ -142,7 +144,7 @@ __zz_zle_git-tui_add(){
         for ((i=0 ; i<=FILES_ALL_LEN ; i++)) ; do
             file=${FILES_ALL[$i]}
             zcurses move files $((WINDOW_CURSOR++)) 0
-            print_line $file
+            print_line "$file"
             if [[ $WINDOW_CURSOR -eq $WINDOW_LEN ]] ; then
                 break
             fi
@@ -160,7 +162,7 @@ __zz_zle_git-tui_add(){
         for ((i=i_base ; i<=FILES_ALL_LEN-1 ; i++ )) ; do
             file=${FILES_ALL[$i]}
             zcurses move files $((WINDOW_CURSOR++)) 0
-            print_line $file
+            print_line "$file"
         done
     }
 
@@ -217,7 +219,7 @@ __zz_zle_git-tui_add(){
                         zcurses refresh files
                         string=${FILES_ALL[$((--FILES_CURSOR))]}
                         zcurses move files 0 0
-                        print_line $string
+                        print_line "$string"
                         zcurses move files 0 1
                         zcurses refresh files
                     else
@@ -242,7 +244,7 @@ __zz_zle_git-tui_add(){
                         zcurses refresh files
                         string=${FILES_ALL[$((++FILES_CURSOR))]}
                         zcurses move files $((WINDOW_LEN-1)) 0
-                        print_line $string
+                        print_line "$string"
                         zcurses move files $((WINDOW_LEN-1)) 1
                         zcurses refresh files
                     else
@@ -295,10 +297,6 @@ __zz_zle_git-tui_add(){
                     FILES_ADD.remove ${FILES_ADD[$FILES_CURSOR]}
                 fi
             ;;
-            'r')
-                zcurses clear files
-                zcurses refresh files
-            ;;
         esac
     }
     {
@@ -327,7 +325,7 @@ __zz_zle_git-tui_add(){
         zcurses delwin cancel
         zcurses delwin main
         zcurses end
-        for iii in ${FILES_ADD[@]} ; do echo $iii ; done
+        for file in ${FILES_ADD[@]} ; do echo "file added : ${file[3,-1]} (${file[0,1]})" ; done
         unset BUTTON_STATE FILES_ALL FILES_ALL_LEN
         unset FILES_ADD FILES_CURSOR WINDOW_CURSOR
         unset WINDOW_LEN NOEXIT
