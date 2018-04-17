@@ -20,10 +20,8 @@ __zz_zle_git-tui_add(){
         zcurses bg main cyan/cyan
         zcurses attr main black/cyan
         zcurses border main
-        zcurses position main POS
         local title="┤ Cochez les fichiers à ajouter : ├"
-        Y=0 X=$((COLUMNS/2-$#title/2))
-        zcurses move main $Y $X
+        zcurses move main 0 $((COLUMNS/2-$#title/2))
         zcurses attr main black/cyan
         zcurses string main "$title"
     }
@@ -43,7 +41,7 @@ __zz_zle_git-tui_add(){
 
     set_button(){ # $1= cancel ok none
         local button=$1
-        local color
+        local color attr str
         case $button in
             "ok")
                 str="OK"
@@ -169,7 +167,7 @@ __zz_zle_git-tui_add(){
     wait_for_user_keypress(){
         local string
         local raw key char
-        X=1
+        local X=1
         zcurses refresh files
         # User can press two types of key :
         # RAW (classic alpha-num-sym) and KEY (special key like the arrow keys)
@@ -286,6 +284,7 @@ __zz_zle_git-tui_add(){
                 if [[ $BUTTON_STATE != "none" ]] ; then
                     return 0
                 fi
+                local CHAR_ATTR
                 zcurses querychar files CHAR_ATTR
                 if [[ ${CHAR_ATTR[0]} == ' '  ]] ; then
                     zcurses char files '*'
@@ -325,7 +324,14 @@ __zz_zle_git-tui_add(){
         zcurses delwin cancel
         zcurses delwin main
         zcurses end
+#        zmodload -u zsh/curses
+        local file
         for file in ${FILES_ADD[@]} ; do echo "file added : ${file[3,-1]} (${file[0,1]})" ; done
+        unfunction init init_main_window init_files_window
+        unfunction set_button reset_buttons get_git_files
+        unfunction print_line print_first_lines print_last_lines
+        unfunction FILES_ADD.append FILES_ADD.remove
+        unfunction wait_for_user_keypress
         unset BUTTON_STATE FILES_ALL FILES_ALL_LEN
         unset FILES_ADD FILES_CURSOR WINDOW_CURSOR
         unset WINDOW_LEN NOEXIT
