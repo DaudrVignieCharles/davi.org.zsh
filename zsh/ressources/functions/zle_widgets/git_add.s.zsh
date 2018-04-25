@@ -319,12 +319,11 @@ __zz_zle_git-tui_add(){
             wait_for_user_keypress
         done
     } always {
-        zcurses delwin files
-        zcurses delwin ok
         zcurses delwin cancel
+        zcurses delwin ok
+        zcurses delwin files
         zcurses delwin main
         zcurses end
-#        zmodload -u zsh/curses
         local file
         for file in ${FILES_ADD[@]} ; do echo "file added : ${file[3,-1]} (${file[0,1]})" ; done
         unfunction init init_main_window init_files_window
@@ -336,6 +335,7 @@ __zz_zle_git-tui_add(){
         unset FILES_ADD FILES_CURSOR WINDOW_CURSOR
         unset WINDOW_LEN NOEXIT
         unsetopt ksharrays
+        # zmodload -u zsh/curses
     }
 
 }
