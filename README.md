@@ -1,171 +1,62 @@
-# DaVi_ZSH
+# ZZ - ZSH framework
 
-## Table des matières :
-- [Installation](#installation)
-- [Commandes internes](#commandes-internes)
-- [Alias](#alias)
-- [Fonctions](#fonctions)
-- [ZLE widgets](#zle-widgets)
-- [Spécifications du code source](#spécifications-du-code-source)
+## Index
 
-## Installation
+- [Introduction](#introduction)
+- [Feature presentation](#feature-presentation)
+- [Install](#install)
+- [Wiki]()
 
-![warning](https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Alert-Stop-Warning-Error_icon.svg/32px-Alert-Stop-Warning-Error_icon.svg.png)    **Attention : Si un dossier $HOME/.zsh ou un fichier $HOME/.zsh existe, il sera renommé avec l'extension ".old". Si vous voulez écraser votre ancien environnement ZSH, passez l'option "-ow" ou sa forme longue "--overwrite" lors de l'exécution du script "init.zsh"."**
+## Introduction
 
-	git clone https://github.com/DaudrVignieCharles/davi.org.zsh.git
-	cd davi.org.zsh
-	./init.zsh
-	
-Le clone de git est appelé version de développement. Cette sert à faire les modifications qui peuvent ensuite être envoyée en production avec la fonction [**zz.main.propage**](#commandes-internes).
+ZZ is a powerful ZSH framework. It is modularly designed to be debugged or modified as easily as possible.
+It comes with many aliases, functions, ZLE widgets or TUI tools using zsh/curses (`zcurses`) module. It also comes with a unit test module.
 
-## Commandes internes
+ZZ is designed to make the most of the possibilities of ZSH and to use at least external tools like `grep` or `ls` for example.
 
-- ##### zz.main.propage
+## Feature presentation
 
-		Synopsis :
-			zz.main.propage
-		
-		Description :
-			Utilise rsync pour synchroniser le dossier .zsh et le fichier .zshrc avec le dépôt Git local.
-		
-		Arguments :
-			Aucun.
-		
-- ##### zz.main.update
-		
-		Synopsis :
-			zz.main.update [-n --no-sync] [-d --dry-run]
-		
-		Description :
-			Met à jour ZZ en utilisant git pull puis synchronise automatiquement
-			en utilisant zz.main.propage.
-		
-		Arguments : 
-			-d --dry-run		Simule la mise à jour.
-			-ns --no-sync		Met le dépôts local à jour sans synchroniser automatiquement
-							avec la production.
+### Functions and alias
 
-- ##### zz.plugin.link
+There are many functions and aliases, go to the [specific wiki page]().
 
-		Synopsis :
-			zz.plugin.link PLUGIN NUM
-		
-		Description :
-			Crée un lien symbolique activant un plugin.
-			Cette fonction est acompagnée d'une autocompletion pour le nom du plugin.
-			
-		Arguments :
-			PLUGIN				Plugin ZSH
-			NUM				Numéro de priorité à trois chiffres compris entre 000 et 999.
-							Les plugins sont chargés en fonction de ce numéro.
-							Les liens seront chargés par ordre croissant. 000 en premier,
-							999 en dernier.
+### ZLE widgets
+ZZ comes with [ZLE widgets](). These are mainly code insertion widget (printf, while loop, conditional statement, etc), Git management widget, or widget enhancing ZLE by giving it IDE functionality (like automatic closing of parentheses, brackets, etc.).
 
-- ##### zz.plugin.unlink
+Some of the widgets will open TUI interfaces like the widget for `git add` :
 
-		Synopsis :
-			zz.plugin.unlink LINK
-		
-		Description :
-			Supprime un lien symbolique créé par zz.plugin.link.
-			Cette fonction est acompagnée d'une autocompletion pour le fichier lien.
-		
-		Arguments :
-			LINK				Fichier lien symbolique.
+![git-tui add](https://user-images.githubusercontent.com/17654421/39536905-44cf576a-4e38-11e8-8949-b4a3706b2a6f.png)
 
-## Alias
-Voir [alias](./zsh/ressources/alias/README.md).
+It also comes with a prompt graphically inspired by adam2 that supports Git repositories.
 
-## Fonctions
-Voir [fonctions](./zsh/ressources/functions/README.md).
+### Prompt
 
-## ZLE widgets
+It display :
+- line 1 left   : job(s), relative path
+- line 1 right  : date, tty, shlvl, user@host
+- line 2 left   : return of the last command, time of the last command
+- line 2 right  : if git repo : branch, status
 
-#### 1. Insertion de code :
-**NOTE** : Lors d'une insertion de code, le curseur sera toujours placé de façon optimale dans le code inséré.
+![prompt without git](https://user-images.githubusercontent.com/17654421/39536898-42102928-4e38-11e8-9647-b18731123b81.png)
 
-- **Alt** + **!** + **p**
+Prompt while in Git repository :
 
-Insère **printf "\n"**
+![prompt with git](https://user-images.githubusercontent.com/17654421/39536902-439700b4-4e38-11e8-955f-ee65fa64c97b.png)
 
-- **Alt** + **!** + **i**
+### ztest
 
-Insère une structure conditionnelle **if**.
+[ztest]() is a unittest module for ZSH :
+![ztest](https://user-images.githubusercontent.com/17654421/39536893-3e1fd930-4e38-11e8-8cf5-d0224b6347cb.png)
 
-- **Alt** + **!** + **w**
+## Install
 
-Insère une boucle **while**.
-
-- **Alt** + **!** + **f**
-
-Insère une boucle **for**.
-
-- **Alt** + **!** + **c**
-
-Insère une structure conditionnelle **case**.
-
-#### 2. Fermeture automatique des parenthèses et guillemets.
-Lorsque vous taperez l'un des symboles **( [ { "**, le symbole fermant corespondant **) ] } "** sera automatiquement ajouté.
-Le widget ZLE backward_kill_char est remplacé pour prendre en compte ce comportement.
-
-#### 3. Raccourcis Git
-- **Alt** + **:** + **:**
-
-	git status
-	
-- **Alt** + **:** + **;**
-
-	git add
-Pour ajouter des fichier, tapez leurs chemins dans le shell courant avant d'invoquer le widget.
-	
-- **Alt** + **:** + **!**
-
-	git commit
-
-- **Alt** + **:** + **m**
-
-	git push $remote master
-	
-- **Alt** + **:** + **\***
-
-	git push $repo $currentbranch
-
-- **Alt** + **:** + **l**
-
-	git pull $repo master
-
-## Spécifications du code source
-
-#### 1. Fonctions
-Toujours enclore le code dans une fonction quitte à que ce soit une fonction anonyme pour une exécution immédiate. Cela permet de définir des variable locale et évitera donc une polution de l'espace global.
-Toute fonction qui est déclarée et n'est plus utile doit être détruite.
-
-#### 2. Variables
-Les variables doivent explicitement être déclarée locale si elle n'ont pas d'utilité dans l'espace global. Si une variable nécessite d'être globale, elle devra être declarée explicitement comme globale.
-
-#### Code type :
-
-```zsh
-#!/usr/bin/zsh
-# Ne pas oublier le shebang
-# Tout executer dans une fonction, ici une fonction anonyme
-() {
-	# OUverture d'un bloc "always", doit être utilisé pour supprimer les fonctions internes proprement.
-	{
-		# Déclarer les variables locales en local !
-		typeset LOCAL_VAR_1 LOCAL_VAR_2
-		#ou son équivalent :
-		local LOCAL_VAR_3 LOCAL_VAR_4
-		# definition d'une fonction vide et inutile :
-		myemptyfunction () {
-			:
-		}
-	} always {
-		# fermeture du bloc "always", c'est ici que les fonctions doivent être supprimée, en cas d'erreur
-		# dans la première partie, la deuxième s'exécutera quand même.
-		unset -f myemptyfunction
-		# OU son équivalent :
-		unfunction myemptyfunction
-	}
-}
 ```
+git clone https://github.com/DaudrVignieCharles/davi.org.zsh.git
+cd davi.org.zsh
+zsh ./init.zsh
+```
+The git clone is called the development version. This is used to make the changes that can then be sent to production with the `zz.main.propage` function.
+
+Your old ZSH environment will be backed up and can be restored if ZZ was uninstalled.
+
+## [Wiki](https://github.com/DaudrVignieCharles/davi.org.zsh/wiki/home)
