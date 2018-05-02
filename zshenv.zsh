@@ -2,13 +2,13 @@
 
 export ZTEST="$HOME/.zsh_test.log"
 
-ztest(){
+assert(){
     {
         setopt shwordsplit
         # myfunction(){
         #   echo "$@"
         # }
-        # ztest myfunction stderr -eq "hello world" "hello world"
+        # assert myfunction stderr -eq "hello world" "hello world"
         local drivefunction="$1" # function name
         shift
         local fdreturn="$1" # out | err | ret (stdout, stderr, return code)
@@ -27,10 +27,10 @@ ztest(){
             $drivefunction $input
             real_output=$?
             if [[ $real_output -ne $expected_output ]] ; then
-                printf "\x1b[1;31mztest\x1b[0m : return code of function \"%s\" :\n" "$drivefunction"  2>&1
+                printf "\x1b[1;31massert\x1b[0m : return code of function \"%s\" :\n" "$drivefunction"  2>&1
                 printf "\x1b[1;31mfailure\x1b[0m : %s -eq %s\n" "$expected_output" "$real_output" 2>&1
             else
-                printf "\x1b[1;32mztest\x1b[0m : return code of function \"%s\" :\n" "$drivefunction" 2>&1
+                printf "\x1b[1;32massert\x1b[0m : return code of function \"%s\" :\n" "$drivefunction" 2>&1
                 printf "\x1b[1;32msuccess\x1b[0m: %s -eq %s\n" "$expected_output" "$real_output" 2>&1
             fi
             return 0
@@ -43,7 +43,7 @@ ztest(){
         elif [[ "$fdreturn" == "err" ]] ; then
             real_output=$($drivefunction $input 2>&1 1>/dev/null)
         else
-            printf "\x1b[1;31mztest\x1b[0m : error while testing function \"%s\" :\n" "$drivefunction" 2>&1
+            printf "\x1b[1;31massert\x1b[0m : error while testing function \"%s\" :\n" "$drivefunction" 2>&1
             printf "Invalid arguments \"%s\" : must be one of out|err|ret." 2>&1
             return 1
         fi
@@ -51,17 +51,17 @@ ztest(){
         eval "[[ $expected_output $drivetest $real_output ]]"
         ret=$?
         if [[ -n $err ]] ; then
-            printf "\x1b[1;31mztest\x1b[0m : error while testing function \"%s\" :\n" "$drivefunction" 2>&1
+            printf "\x1b[1;31massert\x1b[0m : error while testing function \"%s\" :\n" "$drivefunction" 2>&1
             printf "Invalid test \"%s\"." "$drivetest" 2>&1 1>$logfile
             return 1
         fi
         case $ret in
             '0')
-                printf "\x1b[1;32mztest\x1b[0m : std$fdreturn of function \"%s\" :\n" "$drivefunction" 2>&1
+                printf "\x1b[1;32massert\x1b[0m : std$fdreturn of function \"%s\" :\n" "$drivefunction" 2>&1
                 printf "\x1b[1;32msuccess\x1b[0m : %s -eq %s\n" "$expected_output" "$real_output" 2>&1
             ;;
             '1')
-                printf "\x1b[1;31mztest\x1b[0m : std$fdreturn of function \"%s\" :\n" "$drivefunction" 2>&1
+                printf "\x1b[1;31massert\x1b[0m : std$fdreturn of function \"%s\" :\n" "$drivefunction" 2>&1
                 printf "\x1b[1;31mfailure\x1b[0m : %s -eq %s\n" "$expected_output" "$real_output" 2>&1
             ;;
         esac
