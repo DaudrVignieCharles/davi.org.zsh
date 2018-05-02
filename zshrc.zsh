@@ -25,7 +25,8 @@
     export LOGIN_MSG=true
     export AUTO_UPDATE=false
     export UPDATE_AUTOSYNC=false
-    local LOGFILE="$HOME/.zsh.log"
+    export ZLOG="$HOME/.zsh.log"
+    export ZTEST="$HOME/.zsh_test.log"
     # END CONFIGURATION SECTION
 
     # BEGIN LOGIN MESSAGE SECTION
@@ -40,12 +41,15 @@
 
     # BEGIN SOURCE OF RC.D
     typeset file;
-    if [[ -f $LOGFILE ]] ; then
-        rm $LOGFILE
+    if [[ -f $ZLOG ]] ; then
+        rm $ZLOG
+    fi
+    if [[ -f $ZTEST ]] ; then
+        rm $ZTEST
     fi
     for file in $HOME/.zsh/zshrc.d/[0-9][0-9][0-9]_*.init.zsh ; do
-        printf "source %s\n" "$file" >> $LOGFILE
-        source $file 2>>$LOGFILE ;
+        printf "source %s\n" "$file" >> $ZLOG
+        source $file 2>>$ZLOG ;
     done
     # END SOURCE OF RC.D
 }
