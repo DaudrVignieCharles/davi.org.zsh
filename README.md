@@ -5,7 +5,7 @@
 - [Introduction](#introduction)
 - [Feature presentation](#feature-presentation)
 - [Install](#install)
-- [Wiki]()
+- [Wiki](https://github.com/DaudrVignieCharles/davi.org.zsh/wiki/home)
 
 ## Introduction
 
@@ -58,5 +58,3 @@ zsh ./init.zsh
 The git clone is called the development version. This is used to make the changes that can then be sent to production with the `zz.main.propage` function.
 
 Your old ZSH environment will be backed up and can be restored if ZZ was uninstalled.
-
-## [Wiki](https://github.com/DaudrVignieCharles/davi.org.zsh/wiki/home)
