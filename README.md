@@ -59,4 +59,4 @@ The git clone is called the development version. This is used to make the change
 
 Your old ZSH environment will be backed up and can be restored if ZZ was uninstalled.
 
-## [[Wiki|https://github.com/DaudrVignieCharles/davi.org.zsh/wiki/home]]
+## [Wiki](https://github.com/DaudrVignieCharles/davi.org.zsh/wiki/home)
