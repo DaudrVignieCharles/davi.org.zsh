@@ -1,7 +1,4 @@
-# ZZ - ZSH framework 
-![license](https://img.shields.io/badge/license-GPLv3-green.svg?style=flat)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/badges/shields.svg?style=flat)
-
+# ZZ - ZSH framework ![license](https://img.shields.io/badge/license-GPLv3-green.svg?style=flat)
 
 ## Index
 
