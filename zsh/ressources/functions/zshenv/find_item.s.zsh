@@ -8,3 +8,6 @@ find_item() {
     items=($@)
     if [[ ${items[(r)$item]} == $item ]] then return 0 ; else return 1 ; fi
 }
+
+ztest find_item ret "a a b c" 0 >> $ZTEST
+ztest find_item ret "a e b c" 1 >> $ZTEST
