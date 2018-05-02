@@ -334,7 +334,7 @@ __zz_zle_git-tui_add(){
         unset BUTTON_STATE FILES_ALL FILES_ALL_LEN
         unset FILES_ADD FILES_CURSOR WINDOW_CURSOR
         unset WINDOW_LEN NOEXIT
-        unsetopt ksharrays
+        unsetopt ksharrays shwordsplit
         # zmodload -u zsh/curses
     }
 
