@@ -17,14 +17,11 @@ __zz_zle_backward_kill_char () {
     fi
     if [[ $PRE == '(' ]] && [[ $NEX == ')' ]] ; then
         BUFFER[$CURNEX]=''
-    fi
-    if [[ $PRE == '[' ]] && [[ $NEX == ']' ]] ; then
+    elif [[ $PRE == '[' ]] && [[ $NEX == ']' ]] ; then
         BUFFER[$CURNEX]=''
-    fi
-    if [[ $PRE == '{' ]] && [[ $NEX == '}' ]] ; then
+    elif [[ $PRE == '{' ]] && [[ $NEX == '}' ]] ; then
         BUFFER[$CURNEX]=''
-    fi
-    if [[ $PRE == '"' ]] && [[ $NEX == '"' ]] ; then
+    elif [[ $PRE == '"' ]] && [[ $NEX == '"' ]] ; then
         BUFFER[$CURNEX]=''
     fi
     BUFFER[$CUR]=''
