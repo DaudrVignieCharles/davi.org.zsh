@@ -1,3 +1,5 @@
+#!/usr/bin/zsh
+
 __zz_zle_git-tui_add(){
 
     init(){
