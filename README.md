@@ -1,11 +1,13 @@
 # ZZ - ZSH framework ![license](https://img.shields.io/badge/license-GPLv3-green.svg?style=flat)
 
+# [Wiki](https://github.com/Daudre-Vignier-Charles/davi.org.zsh/wiki/home)
+
+
 ## Index
 
 - [Introduction](#introduction)
 - [Feature presentation](#feature-presentation)
 - [Install](#install)
-- [Wiki](https://github.com/DaudrVignieCharles/davi.org.zsh/wiki/home)
 
 ## Introduction
 
