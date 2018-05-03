@@ -2,17 +2,9 @@
 
 (){
     {
-        local MARKED_PATH
-        typeset -a MARKED_PATH
         local PATH
 
-        MARKED_PATH=(
-            "$HOME/.zsh/ressources/alias"
-            "$HOME/.zsh/ressources/functions"
-            "$HOME/.zsh/ressources/sources"
-        )
-
-        load_marked(){
+        load_source(){
             typeset FILE
             typeset SPATH=$1
             for FILE in $SPATH/**/*.s.zsh ; do
@@ -20,8 +12,8 @@
             done
         }
 
-        for PATH in $MARKED_PATH ; do
-            [[ -d $PATH ]] && load_marked $PATH
+        for PATH in $ZSOURCE_PATH ; do
+            [[ -d $PATH ]] && load_source $PATH
         done
 
     } always {

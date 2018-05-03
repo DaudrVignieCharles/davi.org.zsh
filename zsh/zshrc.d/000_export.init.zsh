@@ -2,9 +2,12 @@
 
 (){
     export PATH=$PATH:$HOME/.cargo/bin;
-    export PYTHONPATH=$PYTHONPATH:$HOME/sync.save/programation/python/missalibs/;
-    export MANPAGER=most;
-    export EDITOR=/usr/bin/vim;
+    if find_item most ${commands:t} ; then
+        export MANPAGER=most;
+    fi
+    if find_item vim ${commands:t} ; then
+        export EDITOR=/usr/bin/vim;
+    fi
     export GREP_COLOR=31;
     export HISTFILE;
     export SAVEHIST;
