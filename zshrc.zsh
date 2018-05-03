@@ -13,7 +13,7 @@
 ################################################################################
 #                                                                              #
 # Authors : Daudré-Vignier Charles <daudre.vignier.charles@narod.ru>           #
-# More on my github : https://github.com/DaudrVignieCharles/davi.org.zsh       #
+# More on my github : https://github.com/Daudre-Vignier-Charles/davi.org.zsh   #
 #                                                                              #
 # Copyright 2016-2018 Charles Daudré-Vignier <daudre.vignier.charles@narod.ru> #
 # License : GPLv3                                                              #
