@@ -37,6 +37,7 @@
             "$HOME/.zsh/ressources/alias"
             "$HOME/.zsh/ressources/functions"
             "$HOME/.zsh/ressources/sources"
+            "$HOME/.zsh/ressources/zle-widgets"
         )
     ### END CONFIGURATION SECTION
 
