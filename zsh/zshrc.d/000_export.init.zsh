@@ -6,7 +6,7 @@
         export MANPAGER=most;
     fi
     if find_item vim ${commands:t} ; then
-        export EDITOR=/usr/bin/vim;
+        export EDITOR=vim;
     fi
     export GREP_COLOR=31;
     export HISTFILE;
