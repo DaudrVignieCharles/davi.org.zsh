@@ -3,6 +3,7 @@
 (){
     export PATH=$PATH:$HOME/.cargo/bin;
     if find_item most ${commands:t} ; then
+        export PAGER=most;
         export MANPAGER=most;
     fi
     if find_item vim ${commands:t} ; then

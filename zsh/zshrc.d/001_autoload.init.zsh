@@ -6,4 +6,5 @@
     autoload compinit;
     autoload -U zsh-mime-setup;
     autoload -U zsh-mime-handler;
+    autoload -U zed
 }

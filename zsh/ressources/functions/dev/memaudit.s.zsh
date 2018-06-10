@@ -58,7 +58,7 @@ memaudit(){
         -> case (monitor)
     debug :
     ARG=%s
-    MON=%sqq\n" "$ARG" "$MON"
+    MON=%s\n" "$ARG" "$MON"
                     fi
                 ;;
                 ('-h'|'--help') HELP=true
