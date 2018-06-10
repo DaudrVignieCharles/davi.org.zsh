@@ -9,5 +9,9 @@ find_item() {
     if [[ ${items[(r)$item]} == $item ]] then return 0 ; else return 1 ; fi
 }
 
-assert find_item ret "a a b c" 0 >> $ZTEST
-assert find_item ret "a e b c" 1 >> $ZTEST
+if $ZUNITTEST ; then
+    (
+        assert find_item ret "a a b c" 0
+        assert find_item ret "a e b c" 1
+    ) 1>>$ZTEST
+fi

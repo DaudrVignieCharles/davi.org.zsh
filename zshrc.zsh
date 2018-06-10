@@ -22,6 +22,8 @@
 
 () {
     ### BEGIN CONFIGURATION SECTION
+    # do the unit test
+        export ZUNITTEST=false
     # print the login message
         export LOGIN_MSG=true
     # automatic update

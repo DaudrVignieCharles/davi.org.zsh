@@ -47,17 +47,18 @@ memaudit(){
                 ('-i'|'--monitor') MONITOR=true
                 ;;
                 (-i=<->|--monitor=<->) MONITOR=true
-                    if [[ "$ARG" == -m=<-> ]] then
-                        MON=$(echo ${(s/-m=/)ARG})
+                    if [[ "$ARG" == -i=<-> ]] then
+                        MON=$(printf "%s\n" "${(ARG:s/-i=/}")
                     elif [[ "$ARG" == --monitor=<-> ]] ; then
-                        MON=$(echo ${(s/--monitor=/)ARG})
+                        MON=$(printf "%s\n" "${ARG:s/--monitor=/}")
                     else
                         printf "memaudit : erreur inconnue dans :
+	local name=${0:t}
     -> for
         -> case (monitor)
     debug :
     ARG=%s
-    MON=%s)\n" "$ARG" "$MON"
+    MON=%sqq\n" "$ARG" "$MON"
                     fi
                 ;;
                 ('-h'|'--help') HELP=true
