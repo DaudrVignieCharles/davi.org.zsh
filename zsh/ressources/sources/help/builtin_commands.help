@@ -1,0 +1,78 @@
+######################################################
+#                                                    #
+#        ▌     ▗▜▐  ▗                           ▌    #
+# ▀▜▘▀▜▘ ▛▀▖▌ ▌▄▐▜▀ ▄ ▛▀▖ ▞▀▖▞▀▖▛▚▀▖▛▚▀▖▝▀▖▛▀▖▞▀▌▞▀▘ #
+# ▗▘ ▗▘  ▌ ▌▌ ▌▐▐▐ ▖▐ ▌ ▌ ▌ ▖▌ ▌▌▐ ▌▌▐ ▌▞▀▌▌ ▌▌ ▌▝▀▖ #
+# ▀▀▘▀▀▘ ▀▀ ▝▀▘▀▘▘▀ ▀▘▘ ▘ ▝▀ ▝▀ ▘▝ ▘▘▝ ▘▝▀▘▘ ▘▝▀▘▀▀  #
+#                                                    #
+######################################################
+
+
+zz.main.propage :
+
+    Synopsis :
+       zz.main.propage
+    Description :
+        Use rsync to synchronize the .zsh folder, the .zshrc file,
+        and the .zshenv file with the local Git repository.
+    Arguments :
+        None.
+
+
+zz.main.update
+
+    Synopsis :
+        zz.main.update [-n --no-sync] [-d --dry-run]	
+    Description :
+        Update ZZ using git pull then sync automatically
+        using zz.main.propage.
+    Arguments : 
+        -d --dry-run	Simulate the update.
+        -ns --no-sync	Update local repository without syncing
+                        automatically with the production.
+
+
+zz.main.uninstall
+
+    Synopsis :
+        zz.main.uninstall
+    Description :
+        Uninstall ZZ and reinstall old zsh environment.
+    Arguments :
+        None.
+
+
+zz.dev.refresh
+
+    Synopsis :
+        zz.dev.refresh
+    Description :
+        Launch zz.main.propage, reload shell and do the unit tests.
+    Arguments :
+        None.
+
+
+zz.plugin.link
+
+    Synopsis :
+        zz.plugin.link PLUGIN NUM	
+    Description :
+        Creates a symbolic link activating a plugin.
+        an autocompletion for the plugin name comes with this function.
+    Arguments :
+        PLUGIN          ZSH Plugin
+        NUM             Three-digit priority number between 000 and 999.
+                        Plugins are loaded according to this number.
+                        The links will be loaded in ascending order.
+                        000 first, 999 last.
+
+
+zz.plugin.unlink
+
+    Synopsis :
+        zz.plugin.unlink LINK	
+    Description :
+        Removes a symbolic link created by zz.plugin.link.
+        An autocompletion for the link file comes with this function.	
+    Arguments :
+        LINK			Symbolic link file.
