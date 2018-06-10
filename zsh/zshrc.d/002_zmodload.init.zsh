@@ -2,4 +2,5 @@
 
 (){
     zmodload zsh/complist;
+    zmodload zsh/system;
 }

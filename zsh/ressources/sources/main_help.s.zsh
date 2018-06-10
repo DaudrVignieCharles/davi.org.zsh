@@ -7,7 +7,7 @@ zz.main.help(){
 3 ⮩ ZZ dev functions
 4 ⮩ ZZ unittest module
 
-Ctrl-C ⮩ Exit
+Q ⮩ Exit
 
 >>> "
     while true ; do
@@ -26,6 +26,9 @@ Ctrl-C ⮩ Exit
             ;;
             ("4")
                 $PAGER $help_path/unittest.help
+            ;;
+            ("Q"|"q")
+                kill -INT $sysparams[pid]
             ;;
         esac
     done
