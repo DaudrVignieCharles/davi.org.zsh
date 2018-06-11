@@ -9,6 +9,8 @@
     if find_item vim ${commands:t} ; then
         export EDITOR=vim;
     fi
+    # can use ${NEWLINE} in scripts
+    export NEWLINE=$'\n'
     export GREP_COLOR=31;
     export HISTFILE;
     export SAVEHIST;

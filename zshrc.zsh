@@ -23,9 +23,11 @@
 () {
     ### BEGIN CONFIGURATION SECTION
     # do the unit test
-        export ZUNITTEST=false
+        export ZUNITTEST
+        : ${ZUNITTEST:=false}
     # print the login message
-        export LOGIN_MSG=true
+        export LOGIN_MSG
+        : ${LOGIN_MSG:=true}
     # automatic update
         export AUTO_UPDATE=false
     # if automatic update, autosync between $HOME/.zshrc and davi.org.zsh git repo
