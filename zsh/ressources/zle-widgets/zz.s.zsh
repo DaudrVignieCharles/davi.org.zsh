@@ -9,6 +9,23 @@ __zz_zle_main_help(){
 zle -N __zz_zle_main_help
 bindkey "^[OP" __zz_zle_main_help
 
+# map F2 to __launcher
+
+__zz_zle_main_launcher(){
+    BUFFER=__launcher
+    zle accept-line
+}
+zle -N __zz_zle_main_launcher
+bindkey "^[OQ" __zz_zle_main_launcher
+
+# map F3 to cd $ZDEV_PATH
+__zz_zle_main_cdz(){
+    BUFFER="cd $ZDEV_PATH && clear"
+    zle accept-line
+}
+zle -N __zz_zle_main_cdz
+bindkey "^[OR" __zz_zle_main_cdz
+
 # map F4 to zz.main.propage
 __zz_zle_main_propage(){
     BUFFER=zz.main.propage

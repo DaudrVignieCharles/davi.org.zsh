@@ -28,8 +28,10 @@ Q ⮩ Exit
                 $PAGER $help_path/unittest.help
             ;;
             ("Q"|"q")
-                kill -INT $sysparams[pid]
+                printf "\n"
+                return 0
             ;;
         esac
     done
 }
+alias help=zz.main.help
