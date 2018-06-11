@@ -8,9 +8,11 @@ assert(){
             # assert myfunction (out, err) test function_parameters expected_output
             # assert myfunction ret function_parameters expected_return_code
         # EX:
+            # fu(){ echo "$1\n$2" }
             # myfunction(){ echo "$@" }
             # carre(){ echo $(( $1*$1 )) }
             # assert myfunction stderr '==' "hello world" "hello world"
+            # assert myfunction stderr '==' "hello" "world" "hello${NEWLINE}world"
             # assert carre stderr '-eq' "2" "4"
             # assert true ret "" 0
             # assert false ret "" 1
@@ -38,8 +40,8 @@ assert(){
             return 1
         fi
         if [[ "$fdreturn" == "ret" ]] ; then
-            input=($1)
-            expected_output="$2"
+            input=( ${@[1,-2]} )
+            expected_output="$@[-1]"
             $drivefunction $input
             real_output=$?
             if [[ $real_output -ne $expected_output ]] ; then
@@ -57,37 +59,45 @@ assert(){
             return 0
         fi
         drivetest="$1"
-        input=($2)
-        expected_output="$3"
+        shift
+        input=()
+        local i
+        unsetopt shwordsplit
+        for i in ${@[1,-2]} ; do
+            input+="$i"
+        done
+        expected_output="$@[-1]"
         if [[ "$fdreturn" == "out" ]] ; then
-            real_output=$($drivefunction $input)
+            real_output=$($drivefunction ${input[@]}) 2>/dev/null
         elif [[ "$fdreturn" == "err" ]] ; then
-            real_output=$($drivefunction $input 2>&1 1>/dev/null)
+            real_output=$($drivefunction ${input[@]} 2>&1 1>/dev/null)
         else
             printf "│\x1b[1;35m██\x1b[0m ztest: error while testing \"%s\":\n" "$drivefunction" 2>&1
             printf "│\x1b[1;35m██\x1b[0m invalid argument \"%s\": must be one of out|err|ret.\n" "$fdreturn" 2>&1
             printf "└─────────────────────────────────────────────────────────────────\n" 2>&1
             return 1
         fi
-        err=$(eval "[[ $expected_output $drivetest $real_output ]]" 2>&1 )
-        eval "[[ $expected_output $drivetest $real_output ]]" 1>&2 2>/dev/null
-        ret=$?
+        local str_eval="[[ \"${expected_output}\" ${drivetest} \"${real_output}\" ]]"
+        err=$(eval "$str_eval" 2>&1 )
         if [[ -n $err ]] ; then
             printf "│\x1b[1;35m██\x1b[0m ztest: error while testing \"%s\":\n" "$drivefunction" 2>&1
             printf "│\x1b[1;35m██\x1b[0m invalid test \"%s\".\n" "$drivetest" 2>&1
+            printf "│\x1b[1;35m██\x1b[0m error :\n%s\n" "$err" 2>&1
             printf "└─────────────────────────────────────────────────────────────────\n" 2>&1
             return 1
         fi
+        eval "$str_eval" 1>&2 2>/dev/null
+        ret=$?
         case $ret in
             '0')
                 printf "│\x1b[1;32m██\x1b[0m ztest: std$fdreturn of \"%s\":\n" "$drivefunction" 2>&1
-                printf "│\x1b[1;32m██\x1b[0m assertion success : %s -eq %s\n" "$expected_output" "$real_output" 2>&1
+                printf "│\x1b[1;32m██\x1b[0m assertion success : %s\n" "$str_eval" 2>&1
                 printf "│\x1b[1;32m██\x1b[0m executed : %s %s --> %s\n" "$drivefunction" "$input" "$real_output"
                 printf "└─────────────────────────────────────────────────────────────────\n" 2>&1
             ;;
             '1')
                 printf "│\x1b[1;31m██\x1b[0m ztest: std$fdreturn of \"%s\":\n" "$drivefunction" 2>&1
-                printf "│\x1b[1;31m██\x1b[0m assertion failure : %s -eq %s\n" "$expected_output" "$real_output" 2>&1
+                printf "│\x1b[1;31m██\x1b[0m assertion failure : %s\n" "$str_eval" 2>&1
                 printf "│\x1b[1;31m██\x1b[0m executed : %s %s --> %s\n" "$drivefunction" "$input" "$real_output"
                 printf "│\x1b[1;31m██\x1b[0m expected : %s %s --> %s\n" "$drivefunction" "$input" "$expected_output"
                 printf "└─────────────────────────────────────────────────────────────────\n" 2>&1
