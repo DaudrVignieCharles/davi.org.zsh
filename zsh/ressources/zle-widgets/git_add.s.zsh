@@ -321,6 +321,15 @@ __zz_zle_git-tui_add(){
             wait_for_user_keypress
         done
     } always {
+        zcurses clear cancel
+        zcurses clear ok
+        zcurses clear files
+        zcurses clear main
+        zcurses bg main black/black
+        zcurses refresh cancel
+        zcurses refresh ok
+        zcurses refresh files
+        zcurses refresh main
         zcurses delwin cancel
         zcurses delwin ok
         zcurses delwin files
