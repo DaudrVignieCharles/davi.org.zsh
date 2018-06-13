@@ -2,8 +2,8 @@
 
 zz.dev.runUnittest(){
     cd $HOME/.zsh/ressources/
-    grep -h "^[[:blank:]]*assert " **/*.s.zsh(.) | while read line ; do
-        eval $line 
-    done
+    while read line ; do
+        [[ $line -regex-match "^[[:blank:]]*assert .*$" ]] && eval "$line"
+    done < **/*.zsh(.)
     cd -
 }
