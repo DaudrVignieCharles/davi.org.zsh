@@ -14,7 +14,7 @@ __launcher(){
         zcurses move inputbox 0 0
         zcurses refresh main
         zcurses refresh inputbox
-        local user_input raw key char map append k
+        local user_input raw key
         local i_win=0
         append=false
         while true ; do
@@ -64,7 +64,7 @@ __launcher(){
         setopt shwordsplit
         user_input=($user_input)
         unsetopt shwordsplit
-        #nohup ${user_input[@]} &>/dev/null &
+        nohup ${user_input[@]} &>/dev/null &
     } always {
         unsetopt ksharrays
         zcurses clear inputbox
@@ -74,6 +74,5 @@ __launcher(){
         zcurses delwin inputbox
         zcurses delwin main
         zcurses end
-        echo $user_input
     }
 }

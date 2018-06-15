@@ -49,3 +49,11 @@ __zz_dev_runUnittest(){
 }
 zle -N __zz_dev_runUnittest
 bindkey "^[[17~" __zz_dev_runUnittest
+
+# map F10 to user locate
+__zz_zle_locate(){
+    BUFFER=__locatebox
+    zle accept-line
+}
+zle -N __zz_zle_locate
+bindkey "^[[21~" __zz_zle_locate
