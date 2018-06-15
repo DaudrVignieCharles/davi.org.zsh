@@ -1,0 +1,25 @@
+Global :
+	F1  ->  Help
+	F2  ->  Launcher
+	F3  ->  Go to davi.org.zsh git repository
+	F4  ->  Sync zsh files with davi.org.zsh git repository.
+	F5  ->  Refresh the shell (may generate some bugs)
+	F6  ->  Run unit test
+	F10 ->  Search
+
+Git :
+	alt + : + : -> git status
+	alt + : + ; -> git add
+	alt + : + ! -> git commit
+	alt + : + l -> git pull $ORIGIN
+	alt + : + * -> git push local/master master
+	alt + : + t -> git tree
+
+Code insertion :
+	alt + ! + e --> printf
+	alt + ! + i --> if
+	alt + ! + w --> while
+	alt + ! + f --> for
+	alt + ! + c --> case
+	alt + ! + ( --> function
+

@@ -1,6 +1,6 @@
 #!/usr/bin/zsh
 
-zz.dev.refresh(){
+zz.main.refresh(){
     ZUNITTEST=false
     LOGIN_MSG=false
     source $HOME/.zshenv

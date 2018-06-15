@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 
 isuint(){
-    [[ "$1" == <-> ]] && return 0 || return 1    
+    [[ "$1" =~ "^\+?[0-9]*$" ]] && return 0 || return 1
 }
 
 isint(){
@@ -27,7 +27,7 @@ if $ZUNITTEST ; then
         assert isuint ret 1 0
         assert isuint ret 123 0
         assert isuint ret -123 1
-        assert isuint ret +123 1
+        assert isuint ret +123 0
         assert isuint ret 123.123 1
         assert isuint ret .1 1
         assert isuint ret 123. 1

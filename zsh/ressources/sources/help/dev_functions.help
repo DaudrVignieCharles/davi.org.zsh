@@ -1,0 +1,21 @@
+Dev functions are always loaded (script and interactive shell)
+
+Type testing :
+	is_number : if ARG is a number return 0 else return 1
+	is_uint ARG : if ARG is uint return 0 else return 1
+	is_int ARG  : if ARG is int return 0 else return 1
+	is_ufloat ARG : if ARG is ufloat return 0 else return 1
+	is_float ARG : if ARG is float return 0 else return 1
+	is_uint ARG : if ARG is uint return 0 else return 1
+	is_uint ARG : if ARG is uint return 0 else return 1
+	is_uint ARG : if ARG is uint return 0 else return 1
+
+Array :
+	find_item ARG [*ARGS] : if ARG is in *ARGS return 0 else return 1
+
+Misc :
+	getkey : capture a single keyboard key including special keys
+			 if raw key print raw
+			 if special key print key name
+
+Zcurses :

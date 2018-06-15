@@ -35,12 +35,12 @@ zle -N __zz_zle_main_propage
 bindkey "^[OS" __zz_zle_main_propage
 
 # map F5 to zz.dev.refresh
-__zz_zle_dev_refresh(){
-    BUFFER=zz.dev.refresh
+__zz_zle_main_refresh(){
+    BUFFER=zz.main.refresh
     zle accept-line
 }
-zle -N __zz_zle_dev_refresh
-bindkey "^[[15~" __zz_zle_dev_refresh
+zle -N __zz_zle_main_refresh
+bindkey "^[[15~" __zz_zle_main_refresh
 
 # map F6 to zz.dev.runUnittest
 __zz_dev_runUnittest(){

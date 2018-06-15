@@ -6,9 +6,9 @@
     # We need the prompt not to appear while the login message is printed,
     # Then we run the prompt only when the job run is finished.
     if $LOGIN_MSG ; then
-        wait $LOGIN_MSG_PID
+        #wait $LOGIN_MSG_PID
         setopt monitor
-        unset LOGIN_MSG_PID
+        #unset LOGIN_MSG_PID
     fi
     # END LOGIN MSG SECTION
 

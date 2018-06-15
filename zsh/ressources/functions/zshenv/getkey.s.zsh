@@ -3,7 +3,7 @@
  # This script is an interface for the ZSH builtin `read`,
  # it allows to capture a single keyboard key including special keys like RETURN,
  # BACKSPACE, ESC, Fx, BLANK, TAB, arrow keys(UP, DOWN, LEFT, RIGHT) etc.
- # If it is a classic letter, it returns it, otherwise,
+ # If it is a raw key, it returns it, otherwise,
  # it returns an ASCII representation of the special key.
  # This is particularly useful for a text user interface, controlled with the keyboard using special keys.
 

@@ -48,10 +48,10 @@
     ### BEGIN LOGIN MESSAGE SECTION
     # For this section see comment in 990_prompt.init.zsh
     if $LOGIN_MSG ; then
-        export LOGIN_MSG_PID;
+        #export LOGIN_MSG_PID;
         setopt nomonitor;
         source $HOME/.zsh/login_msg.zsh &;
-        LOGIN_MSG_PID=$!;
+        #LOGIN_MSG_PID=$!;
     fi
     ### END LOGIN MESSAGE SECTION
 
