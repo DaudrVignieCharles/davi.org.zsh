@@ -1,7 +1,9 @@
 #!/usr/bin/zsh
 
 zfilemode(){
-    zmodload zsh/regex
+    if ! zmodload -e zsh/regex ; then
+        zmodload zsh/regex
+    fi
     HELP="zfilemode -[rodhb] FILE
 Print filemode of FILE in octal without argument, else :
     -r : raw

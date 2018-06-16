@@ -14,8 +14,15 @@ Array :
 	find_item ARG [*ARGS] : if ARG is in *ARGS return 0 else return 1
 
 Misc :
-	getkey : capture a single keyboard key including special keys
-			 if raw key print raw
-			 if special key print key name
+    getkey :
+        capture a single keyboard key including special keys,
+        if raw key print raw,
+        if special key print key name.
 
 Zcurses :
+    zz.dev.curses.inputbox [LENGTH] :
+        open an inputbox, return the user input.
+        LENGHT is the length of the input box, default is 20.
+        Can be used with command substitution like this :
+        user_input=$(zz.dev.curses.inputbox)
+                                

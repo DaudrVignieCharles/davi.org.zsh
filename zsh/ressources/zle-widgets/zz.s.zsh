@@ -1,6 +1,5 @@
 #!/usr/bin/zsh
 
-
 # map F1 to zz.main.help
 __zz_zle_main_help(){
     BUFFER=zz.main.help
@@ -12,7 +11,7 @@ bindkey "^[OP" __zz_zle_main_help
 # map F2 to __launcher
 
 __zz_zle_main_launcher(){
-    BUFFER=__launcher
+    BUFFER=__zz_zle_gen_launcher
     zle accept-line
 }
 zle -N __zz_zle_main_launcher
@@ -52,8 +51,27 @@ bindkey "^[[17~" __zz_dev_runUnittest
 
 # map F10 to user locate
 __zz_zle_locate(){
-    BUFFER=__locatebox
+    BUFFER=__zz_zle_gen_locate
     zle accept-line
 }
 zle -N __zz_zle_locate
 bindkey "^[[21~" __zz_zle_locate
+
+
+__zz_zle_gen_launcher(){
+        local user_input=$(zz.dev.curses.inputbox)
+        setopt shwordsplit
+        user_input=($user_input)
+        unsetopt shwordsplit
+        if [[ -z $user_input ]] ; then
+            return 0
+        elif [[ -z $commands[$user_input] ]] ; then
+            return 2
+        else
+            nohup ${user_input[@]} &>/dev/null &
+        fi
+}
+__zz_zle_gen_locate(){
+    local user_input=$(zz.dev.curses.inputbox)
+    user-locate $user_input
+}

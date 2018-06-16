@@ -63,7 +63,7 @@
     if [[ -f $ZTEST ]] ; then
         rm $ZTEST
     fi
-    for file in $HOME/.zsh/zshrc.d/[0-9][0-9][0-9]_*.init.zsh ; do
+    for file in $HOME/.zsh/zshrc.d/[0-9][0-9][0-9]_*.init.zsh(.) ; do
         printf "source %s\n" "$file" >> $ZLOG
         source $file 2>>$ZLOG ;
     done

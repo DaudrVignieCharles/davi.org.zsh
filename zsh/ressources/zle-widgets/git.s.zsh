@@ -64,7 +64,12 @@ bindkey "^[:^[m" __zz_zle_git_push_master
 __zz_zle_git_push_current () {
     if __is_git ; then
         local repo=${$(git rev-parse --show-toplevel):t}
-        local current=$(git branch | sed -n 's/\* //p')
+        git branch | while read line ; do
+            if [[ $line =~ "\*.*" ]] ; then
+                local current=${line:s/* /}
+                break
+            fi
+        done
         BUFFER="git push $repo $current"
     else
         export zle_highlight[(r)default:*]="default:fg=red,bold"

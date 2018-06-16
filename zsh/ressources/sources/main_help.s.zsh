@@ -2,10 +2,11 @@
 
 zz.main.help(){
     local help_path="$HOME/.zsh/ressources/sources/help"
-    main_menu="1 ⮩ ZZ builtin commands
+    main_menu="1 ⮩ main builtin commands
 2 ⮩ ZLE widgets
-3 ⮩ ZZ dev functions
-4 ⮩ ZZ unittest module
+3 ⮩ dev builtin functions
+4 ⮩ unittest module
+5 ⮩ code specification
 
 Q ⮩ Exit
 
@@ -26,6 +27,9 @@ Q ⮩ Exit
             ;;
             ("4")
                 $PAGER $help_path/unittest.help
+            ;;
+            ("5")
+                $PAGER $help_path/specs.help
             ;;
             ("Q"|"q")
                 printf "\n"

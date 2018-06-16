@@ -3,7 +3,9 @@
 __zz_zle_git-tui_add(){
 
     init(){
-        zmodload zsh/curses
+        if ! zmodload -e zsh/curses ; then
+            zmodload zsh/curses
+        fi
         setopt shwordsplit
         setopt ksharrays
         zcurses init
@@ -84,7 +86,9 @@ __zz_zle_git-tui_add(){
     get_git_files(){
         local list file_status
         local i=0
-        list=$(git status --porcelain | tr '\n' '*')
+        list=$(git status --porcelain)
+        list="${var:gs/
+/*}"
         IFS="*"
         for file_status in $list ; do
             case "${file_status[0]}${file_status[1]}" in

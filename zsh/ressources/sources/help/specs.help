@@ -1,0 +1,88 @@
+----------------------------------------------------------------------------------------
+
+Indentation must be 4 spaces.
+  
+  + Why ?
+    It's arbitrary, mixing spaces and indentations is never a good thing.
+
+----------------------------------------------------------------------------------------
+
+With few exceptions, code must always be in a function.
+  
+  + Why ?
+    Variables can only be local in a function.
+  
+  + Tips:
+    You can use an anonymous function in all your files to enclose the code :
+
+| #!/usr/bin/zsh
+| (){
+|    # Some code
+| }
+
+----------------------------------------------------------------------------------------
+
+Variables that are not useful in the global space must be declared as local with
+the keywords typeset or one of its aliases (local, integer, etc).
+If you need to declare global variables in a script, do not forget to delete them
+if they are no longer useful once the script is finished.
+  
+  + Why ?
+    Do I need to explain how horrific the pollution of the global environment is ?
+
+----------------------------------------------------------------------------------------
+
+Functions can not be local in ZSH.
+To avoid having unnecessary functions in the gloabal environment,
+you can delete them at the end of the script.
+    
+    + Tips:
+      Use an "always" block :
+
+| (){
+|     {
+|         fu(){
+|             #some stuff
+|         }
+|         fu
+|         return 0
+|     } always {
+|         unfunction fu
+|     }
+| }
+
+----------------------------------------------------------------------------------------
+
+Before loading a builtin module with zmodload, you must test if it is already loaded.
+  
+  + Why ?
+    To avoid bugs by loading a module twice.
+  
+  + Tips:
+    Use "zmodload -e MODULE"
+    Exemple:
+
+| if zmodload -e zsh/curses ; then
+|     echo "The module is already loaded."
+| elif ! zmodload -e zsh/curses ; then
+|     echo "The module is not loaded, loading it..."
+|     zmodload zsh/curses
+| fi
+
+----------------------------------------------------------------------------------------
+
+Do not use external programs like grep, sed, awk, bc, etc.
+  
+  + Why ?
+    Because ZSH can replace all these utilities,
+    this avoids calling the fork () system call,
+    the most expensive shell operation.
+  
+  + Tips:
+    Read the manual, learn the ZSH builtins and be imaginative...
+    Start by reading zshbuiltins and zshmisc.
+    Search in the builtins modules, for example, zsh/mathfunc is
+    a very useful module, no need of bc/dc.
+
+----------------------------------------------------------------------------------------
+

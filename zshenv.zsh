@@ -109,7 +109,7 @@ assert(){
 }
 
 
-for file in $HOME/.zsh/ressources/functions/zshenv/*.s.zsh ; do
+for file in $HOME/.zsh/ressources/zshenv/**/*.s.zsh(.) ; do
     source $file ;
 done
 

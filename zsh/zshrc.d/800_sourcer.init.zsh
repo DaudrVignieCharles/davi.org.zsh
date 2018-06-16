@@ -7,7 +7,7 @@
         load_source(){
             typeset FILE
             typeset SPATH=$1
-            for FILE in $SPATH/**/*.s.zsh ; do
+            for FILE in $SPATH/**/*.s.zsh(.) ; do
                 source $FILE
             done
         }
