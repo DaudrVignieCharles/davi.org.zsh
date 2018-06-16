@@ -2,11 +2,11 @@
 
 (){
     export PATH=$PATH:$HOME/.cargo/bin;
-    if find_item most ${commands:t} ; then
+    if finditem most ${commands:t} ; then
         export PAGER=most;
         export MANPAGER=most;
     fi
-    if find_item vim ${commands:t} ; then
+    if finditem vim ${commands:t} ; then
         export EDITOR=vim;
     fi
     # can use ${NEWLINE} in scripts
