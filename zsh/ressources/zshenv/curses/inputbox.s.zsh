@@ -77,15 +77,15 @@ Argument errors are silently processed by setting a default value dependent on t
             unset raw key
         done
     } always {
-        if [[ $TRY_BLOCK_ERROR -ne 0 ]] ; then
-            unsetopt ksharrays
-            zcurses clear inputbox
-            zcurses clear main
-            zcurses refresh inputbox
-            zcurses refresh main
-            zcurses delwin inputbox
-            zcurses delwin main
-            zcurses end
+        unsetopt ksharrays
+        zcurses clear inputbox
+        zcurses clear main
+        zcurses refresh inputbox
+        zcurses refresh main
+        zcurses delwin inputbox
+        zcurses delwin main
+        zcurses end
+        if [[ $TRY_BLOCK_ERROR -eq 0 ]] ; then
             if [[ -n $user_input ]] ; then
                 printf "%s\n" "$user_input" >&2
             fi

@@ -61,14 +61,15 @@ bindkey "^[[21~" __zz_zle_locate
 __zz_zle_gen_launcher(){
         local user_input=$(zz.dev.curses.inputbox)
         setopt shwordsplit
-        user_input=($user_input)
+        local exe=($user_input)
         unsetopt shwordsplit
+        exe=$exe[1]
         if [[ -z $user_input ]] ; then
             return 0
-        elif [[ -z $commands[$user_input[1]] ]] ; then
+        elif [[ -z $commands[$exe] ]] ; then
             return 2
         else
-            nohup ${user_input[@]} &>/dev/null &
+            nohup zsh --glob --extendedglob -c "$user_input" >/dev/null 2>&1 &
         fi
 }
 __zz_zle_gen_locate(){
