@@ -3,9 +3,20 @@
 
 zz.dev.curses.inputbox(){
     {
+        zparseopts h=HELP -help=HELP
+        if [[ -n $HELP ]] ; then
+            printf "zz.dev.curses.inputbox [uint COLUMNS]
+Argument errors are silently processed by setting a default value dependent on the error.
+"
+            return 0
+        fi
         NCOL=$1
         if [[ -z $NCOL ]] || ! isuint $NCOL ; then
             NCOL=40
+        elif [[ $NCOL -lt 4 ]] ; then
+            NCOL=4
+        elif [[ $NCOL -gt $COLUMNS ]] ; then
+            NCOL=$COLUMNS
         fi
         zmodload -e zsh/curses || zmodload zsh/curses
         setopt ksharrays
@@ -66,14 +77,18 @@ zz.dev.curses.inputbox(){
             unset raw key
         done
     } always {
-        unsetopt ksharrays
-        zcurses clear inputbox
-        zcurses clear main
-        zcurses refresh inputbox
-        zcurses refresh main
-        zcurses delwin inputbox
-        zcurses delwin main
-        zcurses end
-        printf "%s\n" "$user_input" >&2
+        if [[ $TRY_BLOCK_ERROR -ne 0 ]] ; then
+            unsetopt ksharrays
+            zcurses clear inputbox
+            zcurses clear main
+            zcurses refresh inputbox
+            zcurses refresh main
+            zcurses delwin inputbox
+            zcurses delwin main
+            zcurses end
+            if [[ -n $user_input ]] ; then
+                printf "%s\n" "$user_input" >&2
+            fi
+        fi
     }
 } 3>&1 1>&2 2>&3
