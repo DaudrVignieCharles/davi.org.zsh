@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 
 (){
-    zmodload zsh/complist;
-    zmodload zsh/system;
-    zmodload zsh/regex;
+    zmodload -e zsh/complist || zmodload zsh/complist;
+    zmodload -e zsh/system || zmodload zsh/system;
+    zmodload -e zsh/regex || zmodload zsh/regex;
 }

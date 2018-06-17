@@ -65,7 +65,7 @@ __zz_zle_gen_launcher(){
         unsetopt shwordsplit
         if [[ -z $user_input ]] ; then
             return 0
-        elif [[ -z $commands[$user_input] ]] ; then
+        elif [[ -z $commands[$user_input[1]] ]] ; then
             return 2
         else
             nohup ${user_input[@]} &>/dev/null &
