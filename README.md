@@ -39,7 +39,7 @@ ZZ comes with [ZLE widgets](). These are mainly code insertion widget (printf, w
 - `alt` + `:` + `!` -> git commit
 - `alt` + `:` + `l` -> git pull $ORIGIN
 - `alt` + `:` + `*` -> git push local/master master
-- `alt` + `:` + ``t` -> git tree
+- `alt` + `:` + `t` -> git tree
 
 ##### Code insertion :
 - `alt` + `!` + `e` --> printf
