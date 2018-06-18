@@ -21,12 +21,33 @@ ZZ is designed to make the most of the possibilities of ZSH and to use at least 
 
 ## Feature presentation
 
-### Functions and alias
-
-There are many functions and aliases, go to the [specific wiki page]().
-
 ### ZLE widgets
 ZZ comes with [ZLE widgets](). These are mainly code insertion widget (printf, while loop, conditional statement, etc), Git management widget, or widget enhancing ZLE by giving it IDE functionality (like automatic closing of parentheses, brackets, etc.).
+
+##### Functions keys :
+- `F1`  ->  Help
+- `F2`  ->  Launcher
+- `F3`  ->  Go to davi.org.zsh git repository
+- `F4`  ->  Sync zsh files with davi.org.zsh git repository.
+- `F5`  ->  Refresh the shell (may generate some bugs)
+- `F6`  ->  Run unit test
+- `F10` ->  Search
+
+##### Git :
+- `alt` + `:` + `:` -> git status
+- `alt` + `:` + `;` -> git add
+- `alt` + `:` + `!` -> git commit
+- `alt` + `:` + `l` -> git pull $ORIGIN
+- `alt` + `:` + `*` -> git push local/master master
+- `alt` + `:` + ``t` -> git tree
+
+##### Code insertion :
+- `alt` + `!` + `e` --> printf
+- `alt` + `!` + `i` --> if
+- `alt` + `!` + `w` --> while
+- `alt` + `!` + `f` --> for
+- `alt` + `!` + `c` --> case
+- `alt` + `!` + `(` --> function
 
 Some of the widgets will open TUI interfaces like the widget for `git add` :
 
