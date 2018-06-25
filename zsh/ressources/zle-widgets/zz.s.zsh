@@ -69,7 +69,7 @@ __zz_zle_gen_launcher(){
         elif [[ -z $commands[$exe] ]] ; then
             return 2
         else
-            nohup zsh --glob --extendedglob -c "$user_input" >/dev/null 2>&1 &
+            nohup zsh --glob --extendedglob -c "$user_input" 1>/dev/null 2>&1 &
         fi
 }
 __zz_zle_gen_locate(){
