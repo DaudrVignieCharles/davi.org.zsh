@@ -3,17 +3,25 @@
 zc.textbox(){
     setopt ksharrays
     local line # generic var for "while read line"
-    local help title text
+    local strhelp help title text
+    local wcolors tcolors
     strhelp="zc.textbox TEXT [OPTION]
--h, --help          : display help and exit
--m, --max           : box size will always be the maximum.
--t, --title TITLE   : display title
+-h, --help           : display help and exit
+-m, --max            : box size will always be the maximum.
+-t, --title TITLE    : display title
+-wc, --window-colors COLORS : 
+-tc, --text-colors COLORS   : 
 
-Note :  zc.textbox can read from stdin, you can use pipe or heredoc,
-        if it is, TEXT should not be passed as argument else it will
-        be ignored."
+For -wc and -tc, COLORS consists of two color pairs in the form \"fgcolor/bgcolor\".
+
+zc.textbox can read from stdin, you can use pipe or heredoc,
+if it is, TEXT should not be passed as argument else it will
+be ignored.i"
     # parse and remove opts
-    zparseopts -E -D h=help -help=help m=max -max=max t:=title -title:=title
+    zparseopts -E -D h=help -help=help m=max -max=max \
+        t:=title -title:=title \
+        wc:=wcolors -window-colors:=wcolors \
+        tc:=tcolors -text-colors:=tcolors
     if [[ -n $help ]] ; then
         printf "%s\n" "$strhelp"
         return 0
@@ -23,6 +31,18 @@ Note :  zc.textbox can read from stdin, you can use pipe or heredoc,
         title="┤ ${title[1]//$NEWLINE/ } ├"
         # if -t= or --title=, remove '=' from arg
         [[ "${title[2]}" == "=" ]] && title[2]=''
+    fi
+    if [[ -z ${wcolors} ]] ; then
+        wcolors='white/black'
+    else
+        [[ "${title[0]}" == "=" ]] && title[0]=''
+        wcolors=${wcolors[1]}
+    fi
+    if [[ -z ${tcolors} ]] ; then
+        tcolors='white/black'
+    else
+        [[ "${title[0]}" == "=" ]] && title[0]=''
+        tcolors=${tcolors[1]}
     fi
     # get text from args or stdin
     if ! [[ -t 0 ]] ; then
