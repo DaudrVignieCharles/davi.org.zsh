@@ -10,16 +10,18 @@ zz.main.update () {
             COMMITS_HASH[$tmp[$i+1]]="$tmp[$i]"
         done
         local ERR=false
-        if [[ -z $COMMITS_HASH[refs/heads/master] ]] ; then
-            printf "refs/heads/master not found, aborting.\n"
+        local g_local="refs/heads/master"
+        local g_remote="refs/remotes/origin/master"
+        if [[ -z $COMMITS_HASH[$g_local] ]] ; then
+            printf "%s not found, aborting.\n" "$g_local"
             ERR=true
         fi
-        if [[ -z $COMMITS_HASH[refs/remotes/davi.org.zsh/master] ]] ; then
-            printf "refs/remotes/davi.org.zsh/master not found, aborting.\n"
+        if [[ -z $COMMITS_HASH[$g_remote] ]] ; then
+            printf "%s not found, aborting.\n" "$g_remote"
             ERR=true
         fi
         {$ERR} && return 1
-        if [[ $COMMITS_HASH[refs/heads/master] == $COMMITS_HASH[refs/remotes/davi.org.zsh/master] ]] ; then
+        if [[ $COMMITS_HASH[$g_local] == $COMMITS_HASH[$g_remote] ]] ; then
             printf "The local repository is the same as the remote repository.\n"
             printf "No update available.\n"
             return 1
@@ -36,11 +38,11 @@ zz.main.update () {
     cd "$ZDEV_PATH"
     if check_for_update ; then
         if [[ -n "$DRYRUN" ]] ; then
-            git pull --dry-run --stat davi.org.zsh master
+            git pull --dry-run --stat origin master
             cd "$OLD_PWD"
             return 0
         else
-            git pull --stat davi.org.zsh master
+            git pull --stat origin master
             if [[ -n "$NOSYNC" ]] ; then
                 cd "$OLD_PWD"
                 return 0
