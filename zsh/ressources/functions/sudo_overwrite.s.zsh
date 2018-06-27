@@ -1,6 +1,6 @@
 #!/usr/bin/zsh
 
-if [[ $(id --user) -ne 0 ]] ; then
+if [[ $UID -ne 0 ]] || [[ $EUID -ne 0 ]] ; then
     apt(){
         (( $# == 0 )) && { /usr/bin/apt ; return 0 }
         typeset -a suaptcmd
