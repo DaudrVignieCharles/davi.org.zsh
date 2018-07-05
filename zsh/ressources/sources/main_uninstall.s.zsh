@@ -7,9 +7,9 @@ y/n ?
 > "
     if read -q ; then
         echo
-        [[ -d "$HOME/.zsh.old" ]] && mv $HOME/.zsh.old $HOME/.zsh || rm -r $HOME/.zsh
-        [[ -f "$HOME/.zshrc.old" ]] && mv $HOME/.zshrc.old $HOME/.zshrc || rm $HOME/.zshrc
-        [[ -f "$HOME/.zshenv.old" ]] && mv $HOME/.zshenv.old $HOME/.zshenv || rm $HOME/.zshenv
+        [[ -d "$HOME/.oldzsh/zsh" ]] && mv $HOME/.oldzsh/zsh $HOME/.zsh || rm -r $HOME/.zsh
+        [[ -f "$HOME/.oldzsh/zshrc" ]] && mv $HOME/.oldzsh/zshrc $HOME/.zshrc || rm $HOME/.zshrc
+        [[ -f "$HOME/.oldzsh/zshenv" ]] && mv $HOME/.oldzsh/zshenv $HOME/.zshenv || rm $HOME/.zshenv
         printf "Do you also want to delete the git repository ?
 y/n ?
 > "
