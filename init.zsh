@@ -8,6 +8,15 @@ export ZDEV_PATH=$PWD
         printf "init.zsh must be executed with ZSH.\n"
         return 1
     fi
+    local file
+    for file in ./**/*(.) ; do
+        chmod 644 $file
+    done
+    local directory
+    for directory in ./**/*(/) ; do
+        chmod 755 $directory
+    done
+    chmod 744 init.zsh
     local default_shell
     IFS=':'
     default_shell=( $(getent passwd $USER) )

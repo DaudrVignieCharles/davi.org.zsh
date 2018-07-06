@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 
 
-zz.dev.curses.inputbox(){
+(){
     {
         zparseopts h=HELP -help=HELP
         if [[ -n $HELP ]] ; then

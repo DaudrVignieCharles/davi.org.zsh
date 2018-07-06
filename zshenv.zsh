@@ -1,6 +1,7 @@
 #!/usr/bin/zsh
 
 export ZTEST="$HOME/.zsh_test.log"
+fpath=($HOME/.zsh/ressources/autoload/**/*(/) $fpath)
 
 assert(){
     {
