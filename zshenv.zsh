@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 
 export ZTEST="$HOME/.zsh_test.log"
-fpath=($HOME/.zsh/ressources/autoload/**/*(/) $fpath)
+fpath=($HOME/.zsh/ressources/autoload/**/*(/\N) $fpath)
 
 assert(){
     {
@@ -110,7 +110,7 @@ assert(){
 }
 
 
-for file in $HOME/.zsh/ressources/zshenv/**/*.s.zsh(.) ; do
+for file in $HOME/.zsh/ressources/zshenv/**/*.s.zsh(.\N) ; do
     source $file ;
 done
 

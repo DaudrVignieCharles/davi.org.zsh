@@ -9,11 +9,11 @@ export ZDEV_PATH=$PWD
         return 1
     fi
     local file
-    for file in ./**/*(.) ; do
+    for file in ./**/*(.\N) ; do
         chmod 644 $file
     done
     local directory
-    for directory in ./**/*(/) ; do
+    for directory in ./**/*(/\N) ; do
         chmod 755 $directory
     done
     chmod 744 init.zsh
