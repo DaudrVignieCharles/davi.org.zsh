@@ -12,7 +12,11 @@ finditem() {
     item=$1
     shift
     items=($@)
-    if [[ ${items[(r)$item]} == $item ]] then return 0 ; else return 1 ; fi
+    if [[ ${items[(r)$item]} == $item ]] ; then
+        return 0
+    else
+        return 1
+    fi
 }
 
 if $ZUNITTEST ; then
