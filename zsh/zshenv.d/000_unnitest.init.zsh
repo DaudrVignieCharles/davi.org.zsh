@@ -37,7 +37,7 @@ unnitest(){
         typeset -a arrayTest
         read -A arrayTest<<<$oneTest
         if [[ $( whence -w ${arrayTest[1]} ) != "${arrayTest[1]}: function" ]] ; then
-            printf "Error : %s is not a ZSH function.\n" "${arraTest[1]}"
+            printf "Error : %s is not a ZSH function.\n" "${arrayTest[1]}"
 	    return 3
         else
             testFunction="${arrayTest[1]}"
@@ -49,7 +49,7 @@ unnitest(){
             shift arrayTest
         fi
         typeset term
-        typeset -a testFuctionArgs
+        typeset -a testFunctionArgs
         for term in $arrayTest ; do
             if [[ "$term" == "}" ]] ; then
                 shift arrayTest
@@ -66,7 +66,7 @@ unnitest(){
             ;;
             'out'|'output') alias -g §fd=''
             ;;
-            'iiierr'|'error')  alias -g §fd='2>&1 1>/dev/null'
+            'err'|'error')  alias -g §fd='2>&1 1>/dev/null'
             ;;
             *) printf "ZTestError : %s is not a valid FD\n" "${arrayTest[1]}"; return 3
             ;;
