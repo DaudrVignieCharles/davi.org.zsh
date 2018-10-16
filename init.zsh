@@ -3,11 +3,6 @@
 export ZDEV_PATH=$PWD
 
 () {
-    local shell=$(ps -p $$ -ocomm=)
-    if [[ "$shell" != "zsh" ]] ; then
-        printf "init.zsh must be executed with ZSH.\n"
-        return 1
-    fi
     local file
     for file in ./**/*(.\N) ; do
         chmod 644 $file
