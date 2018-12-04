@@ -235,7 +235,7 @@ binOp(){
             typeset operand ;
             operand=$1 ;
             if ! isbin $operand ; then
-                printf "not : error : %s can not be recognized as an unsigned binary integer\n" "$op" ;
+                printf "%s : error : %s can not be recognized as an unsigned binary integer\n" "$0" "$op" ;
                 return 1
             fi
             case $operator in
@@ -258,7 +258,7 @@ binOp(){
             typeset operand2 ;
             operand2=$2 ;
             if ! isbin $operand1 ; then
-                printf "bool : error : %s can not be recognized as an unsigned binary integer\n" "$operand1" ;
+                printf "%s : error : %s can not be recognized as an unsigned binary integer\n" "$0" "$operand1" ;
                 return 1
             fi
             case $operator in
@@ -267,7 +267,7 @@ binOp(){
                         operand2=1 ;
                     fi
                     if ! isuint $operand2 ; then
-                printf "bool : error : %s can not be recognized as an unsigned decimal integer\n" "$operand2" ;
+                        printf "%s : error : %s can not be recognized as an unsigned decimal integer\n" "$0" "$operand2" ;
                     fi
                     case $operator in
                         'shiftl')
@@ -287,15 +287,15 @@ binOp(){
                 ;;
                 'and'|'or'|'xor')
                     if [[ $# -ne 2 ]] ; then
-                        printf "bool : error : %s must have two operands\n" "$operator";
+                        printf "%s : error : %s must have two operands\n" "$0" "$operator";
                         return 1
                     fi
                     if ! isbin $operand2 ; then
-                        printf "bool : error : %s can not be recognized as an unsigned binary integer\n" "$operand2" ;
+                        printf "%s : error : %s can not be recognized as an unsigned binary integer\n" "$0" "$operand2" ;
                         return 1
                     fi
                     if [[ $#operand1 -ne $#operand2 ]] ; then
-                        printf "bool : error : %s must have two operands with the same lenght\n" "$operator" ;
+                        printf "%s : error : %s must have two operands with the same lenght\n" "$0" "$operator" ;
                         return 1
                     fi
                     typeset -A opmap ;
@@ -316,6 +316,10 @@ binOp(){
                     done
                 ;;
             esac
+        ;;
+        *)
+            printf "%s : error : unknown operator %s\n" "$0" "$operator" ;
+            return 1
         ;;
     esac
     printf "%s\n" "$res" ;
