@@ -19,9 +19,7 @@ unnitest(){
         allTests+=( "$line" )
     done
     unset match
-    if [[ "$1" == "true" ]] ; then
-        :
-    else
+    if ! [[ "$1" == "true" ]] ; then
         return 0
     fi
     if [[ "$2" != "{" ]] ; then

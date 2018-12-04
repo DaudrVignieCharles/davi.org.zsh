@@ -65,7 +65,7 @@
     fi
     for file in $HOME/.zsh/zshrc.d/[0-9][0-9][0-9]_*.init.zsh(.) ; do
         printf "source %s\n" "$file" >> $ZLOG
-        source $file 2>>$ZLOG ;
+        source $file 1>$ZLOG 2>&1 ;
     done
     ### END SOURCE OF RC.D
 }
