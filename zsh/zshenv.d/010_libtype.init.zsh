@@ -198,7 +198,6 @@ __zz_env_libtype_base2dec(){
 }
 
 zz.bin2dec(){
-
     __zz_env_libtype_base2dec $1 2
 }
 
