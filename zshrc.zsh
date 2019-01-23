@@ -70,4 +70,3 @@
     ### END SOURCE OF RC.D
 }
 
-export ZDEV_PATH=/home/touck/sync.save/programation/projets/davi.org.zsh

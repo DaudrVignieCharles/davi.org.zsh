@@ -114,4 +114,3 @@ for file in $HOME/.zsh/zshenv.d/*.init.zsh(.\N) ; do
     source $file ;
 done
 
-export ZDEV_PATH=/home/touck/sync.save/programation/projets/davi.org.zsh
